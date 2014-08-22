@@ -5,7 +5,7 @@ gprs_configs
 
 Most of the configuration have been taken from:
 
-    openbsc.osmocom.org/trac/wiki/OpenBSC_GPRS
+    http://openbsc.osmocom.org/trac/wiki/OpenBSC_GPRS
 
 However, these instructions are specific to the nanoBTS, so we had to do some things differently :)
 
