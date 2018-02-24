@@ -84,6 +84,6 @@ Well done! Now we can use "slow speed" internet again! Yay!
 
 
 [1]
- *Seriously people, fsck "net neutrality" There never was any such thing. Ask anybody who ever who tried to host services at home. If there was net neutrality we wouldn't need "the cloud".*
+ *Seriously people, fsck "net neutrality" There never was any such thing. Ask anybody who ever tried to host services at home. If there was net neutrality we wouldn't need "the cloud".*
 
 
