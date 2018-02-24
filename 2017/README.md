@@ -48,15 +48,17 @@ Just fix up `/etc/resolv.conf` for now, and deal with stopping your distro redir
 
 There will be apps that have hard coded IPs and/or other ways of getting out, so you could also just limit traffic by destination port, see the iptables-save file in this repo for examples.
 
-But better than port based limiting, is limiting by AS number.
-
-This offers an easy way to save a lot of bandwidth by stopping all that traffic that will be caused by social networking sites, but still allow access to the real internet. 
+But better than port based limiting, is limiting by AS number. This offers an easy way to save a lot of bandwidth by stopping all that traffic that will be caused by social networking sites, but still allow access to the real internet. 
 
 This script snippet will get the AS for a domain and create some iptables rules to deal with traffic to that AS:
 
+Save it and do something like:
+
+`./script.sh some_book_or_other.com`
+
 
 	#!/bin/sh
-	IP=`nslookup $1 | grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1 | cut -d\  -f3`
+	IP=`nslookup $1 | grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1 | cut -d\  -f2`
 	AS=`wget -q -O - http://ipinfo.io/$IP/org | cut -f1 -d \  | sed -e 's/AS//'`
 	
 	NETWORKS=`wget -O - http://stat.ripe.net/data/announced-prefixes/data.yaml?resource=$AS|grep prefix\:|grep -v \:\:|awk '{print $3}'`
@@ -64,9 +66,10 @@ This script snippet will get the AS for a domain and create some iptables rules 
 	iptables -t mangle -N as_check
 	iptables -t mangle -N as_do
 
-	for i in $NETWORKS; do echo "iptables -t mangle -A as_check -d $i -j as_do"
+	for i in $NETWORKS; do echo "iptables -t mangle -A as_check -d $i -j as_do" ; done
 
-You might want to modify the 1st line depending on your nslookup output, or do it better.
+You might want to modify the 1st line depending on your nslookup output, or just do it better.
+
 
 Then do what you will with the traffic in the as_do chain, for example:
 
@@ -75,9 +78,6 @@ Then do what you will with the traffic in the as_do chain, for example:
 then you can send back tcp-reset based on the mark, again see the iptables-save example.
 
 Well done! Now we can use "slow speed" internet again! Yay!
-
-
-
 
 
 
